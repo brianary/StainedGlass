@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Sets a Scheduled Task's runtime user as the given gMSA/MSA.
 
@@ -18,13 +18,11 @@ Set-ScheduledTask
 New-ScheduledTaskPrincipal
 
 .EXAMPLE
-Set-SchTaskMsa.ps1 'Backup VSCode settings' automation
+Set-SchTaskMsa 'Backup VSCode settings' automation
 
 Sets the tasks running user to the "automation" managed service account.
 #>
 
-#Requires -Version 7
-#Requires -Modules ScheduledTasks
 [CmdletBinding()] Param(
 [Parameter(Position=0,Mandatory=$true,ValueFromPipelineByPropertyName=$true)][string] $TaskName,
 [Parameter(Position=1,Mandatory=$true)][Alias('MSA','gMSA','UserId')][string] $ServiceAccount,

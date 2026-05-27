@@ -13,7 +13,7 @@ DotNet
 Microsoft.Win32.RegistryKey
 
 .EXAMPLE
-Get-DotNetFrameworkVersions.ps1
+Get-DotNetFrameworkVersions
 
 Name                           Value
 ----                           -----
@@ -23,7 +23,6 @@ v2.0.50727                     2.0.50727.4927
 v3.0                           3.0.30729.4926
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([hashtable])] Param(
 # The computer to list the installed .NET Frameworks for.
 [Alias('CN','Server')][string]$ComputerName = $env:COMPUTERNAME

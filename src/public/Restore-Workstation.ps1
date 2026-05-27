@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Restores various configuration files and exported settings from a ZIP file.
 
@@ -14,7 +14,7 @@ Restore-Workstation.ps1 COMPUTERNAME-20230304T125000.zip
 Restores various settings from a backup file.
 #>
 
-#Requires -Version 7
+#TODO: Add or replace dependencies.
 [CmdletBinding()] Param(
 [ValidateScript({Test-Path $_ -Type Leaf})][Parameter(Position=0,Mandatory=$true)][string] $Path
 )

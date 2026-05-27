@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Adds various configuration files and exported settings to a ZIP file.
 
@@ -17,7 +17,7 @@ Backup-Workstation.ps1
 Saves various config data to COMPUTERNAME-20230304T125000.zip.
 #>
 
-#Requires -Version 7
+#TODO: Add or replace dependencies.
 [CmdletBinding()] Param(
 [Parameter(Position=0)][string] $Path =
 	(Join-Path ~ ('{0}-{1:yyyyMMdd\THHmmss}.zip' -f $env:COMPUTERNAME,(Get-Date)))

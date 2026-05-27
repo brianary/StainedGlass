@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
 Lists the Global Managed Service Accounts for the domain, including the computers they are bound to.
 
 .EXAMPLE
-Get-ADServiceAccountInfo.ps1 |Format-Table -AutoSize
+Get-ADServiceAccountInfo |Format-Table -AutoSize
 
 Name     HostComputers LastLogonDate       Description Account
 ----     ------------- -------------       ----------- -------
@@ -12,7 +12,6 @@ service2 SERVERB       2023-08-27 10:27:03 Second MSA  {}
 serivce3 SERVERC       2023-08-25 17:19:49 Third MSA   {}
 #>
 
-#Requires -Modules ActiveDirectory
 [CmdletBinding()] Param(
 [Parameter(Position=0)][string] $Filter = '*'
 )

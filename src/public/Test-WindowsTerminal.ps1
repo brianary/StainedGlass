@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Returns true if PowerShell is running within Windows Terminal.
 
@@ -9,12 +9,11 @@ Windows Terminal
 https://aka.ms/terminal-documentation
 
 .EXAMPLE
-Test-WindowsTerminal.ps1
+Test-WindowsTerminal
 
 True
 #>
 
-#Requires -Version 7
 [CmdletBinding()][OutputType([bool])] Param()
 if(!$IsWindows) {return $false}
 if($env:WT_SESSION) {return $true}

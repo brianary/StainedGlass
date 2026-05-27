@@ -9,12 +9,11 @@ System.String containing the path of a file to delete (or rename if deleting fai
 Files
 
 .EXAMPLE
-Remove-LockyFile.ps1 InUse.dll
+Remove-LockyFile InUse.dll
 
 (Tries to remove file, renames it if unable to, tries deleting at reboot as a last resort.)
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([void])] Param(
 <#
 Specifies a path to the items being removed. Wildcards are permitted.

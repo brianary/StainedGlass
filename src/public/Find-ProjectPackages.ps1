@@ -19,7 +19,7 @@ Select-Xml
 ConvertFrom-Json
 
 .EXAMPLE
-Find-ProjectModule.ps1 jQuery*
+Find-ProjectPackages jQuery*
 
 Name               Version File
 ----               ------- ----
@@ -28,7 +28,6 @@ jQuery             1.7     C:\Repo\packages.config
 jQuery             1.8.3   C:\OtherRepo\packages.config
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([Management.Automation.PSCustomObject])] Param(
 <#
 The name of a package to search for.

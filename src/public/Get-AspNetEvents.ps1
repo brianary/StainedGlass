@@ -9,12 +9,11 @@ System.Management.Automation.PSObject containing the fields stored in the event.
 Get-WinEvent
 
 .EXAMPLE
-Get-AspNetEvents.ps1 WebServer
+Get-AspNetEvents WebServer
 
 Returns any ASP.NET-related events from the WebServer Application event log that occurred today.
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([psobject])] Param(
 # The name of the server on which the error occurred.
 [Parameter(Position=0)][Alias('CN','Server')][string[]]$ComputerName = $env:COMPUTERNAME,

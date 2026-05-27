@@ -6,12 +6,11 @@ Copy scheduled jobs from another computer to this one, using a GUI list to choos
 Scheduled Tasks
 
 .EXAMPLE
-Copy-SchTasks.ps1 SourceComputer DestComputer
+Copy-SchTasks SourceComputer DestComputer
 
 Attempts to copy tasks from SourceComputer to DestComputer.
 #>
 
-#Requires -Version 2
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter','',
 Justification='The parameter is used elsewhere.')]
 [CmdletBinding()][OutputType([void])] Param(

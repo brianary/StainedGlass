@@ -12,7 +12,6 @@ System.Boolean indicating whether the file is locked.
 Files
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([bool])] Param(
 # A path to a file to test.
 [Parameter(Position=0,Mandatory=$true,ValueFromPipelineByPropertyName=$true)]

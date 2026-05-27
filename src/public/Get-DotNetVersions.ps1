@@ -6,13 +6,10 @@ Determine which .NET Core & Framework versions are installed.
 DotNet
 
 .LINK
-Get-DotNetFrameworkVersions.ps1
-
-.LINK
-Use-Command.ps1
+Get-DotNetFrameworkVersions
 
 .EXAMPLE
-Get-DotNetVersions.ps1
+Get-DotNetVersions
 
 |Implementation Version
 |-------------- -------
@@ -21,10 +18,9 @@ Get-DotNetVersions.ps1
 |.NET           5.0.10
 #>
 
-#Requires -Version 3
 [CmdletBinding()] Param()
 
-foreach($v in (Get-DotNetFrameworkVersions.ps1).GetEnumerator())
+foreach($v in (Get-DotNetFrameworkVersions).GetEnumerator())
 {
 	[pscustomobject]@{
 		Implementation = '.NET Framework'
@@ -33,6 +29,7 @@ foreach($v in (Get-DotNetFrameworkVersions.ps1).GetEnumerator())
 }
 try
 {
+	#TODO: Add or replace dependencies.
 	Use-Command.ps1 dotnet $env:ProgramFiles\dotnet\dotnet.exe -Fail
 	foreach($v in dotnet --list-runtimes)
 	{

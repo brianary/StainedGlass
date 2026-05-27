@@ -28,12 +28,11 @@ Resolve-Path
 Get-Date
 
 .EXAMPLE
-Backup-File.ps1 logfile.log
+Backup-File logfile.log
 
 Copies logfile.log to logfile-201612311159.log (on that date & time).
 #>
 
-#Requires -Version 7
 [CmdletBinding()][OutputType([void])] Param(
 <#
 Specifies a path to the items being removed. Wildcards are permitted.

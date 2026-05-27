@@ -31,7 +31,7 @@ https://vdc-repo.vmware.com/vmwb-repository/dcr-public/3d076a12-29a2-4d17-9269-c
 Get-CimInstance
 
 .EXAMPLE
-Get-SystemDetails.ps1
+Get-SystemDetails
 
 Name             : DEEPTHOUGHT
 Status           : OK
@@ -51,7 +51,6 @@ Shares           :
 NetVersions      : {v4.6.2+win10ann, v3.5, v2.0.50727, v3.0}
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([Management.Automation.PSCustomObject])] Param()
 $cs = Get-CimInstance CIM_ComputerSystem
 $os = Get-CimInstance CIM_OperatingSystem
@@ -181,5 +180,5 @@ $os = Get-CimInstance CIM_OperatingSystem
 	Shares= (Get-CimInstance Win32_Share |
 		Where-Object {$_.Type -eq 0} |
 		ForEach-Object {"$($_.Name)=$($_.Path)"})
-	NetVersions = Get-DotNetFrameworkVersions.ps1
+	NetVersions = Get-DotNetFrameworkVersions
 }

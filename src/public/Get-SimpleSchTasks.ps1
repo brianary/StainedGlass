@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Returns simple scheduled task info.
 
@@ -6,12 +6,11 @@ Returns simple scheduled task info.
 Scheduled Tasks
 
 .EXAMPLE
-Get-SimpleSchTasks.ps1 -TaskPath \ -NonInteractive
+Get-SimpleSchTasks -TaskPath \ -NonInteractive
 
 Returns a simplified list of tasks for the local system that are not set to run interactively.
 #>
 
-#Requires -Version 7
 [CmdletBinding()] Param(
 # Specifies an array of one or more names of a scheduled task. You can use "*" for a wildcard character query.
 [Parameter(Position=0)][string[]] $TaskName,

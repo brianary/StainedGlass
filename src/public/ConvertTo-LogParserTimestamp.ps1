@@ -15,10 +15,9 @@ Date and time
 https://www.microsoft.com/en-us/download/details.aspx?id=24659
 
 .EXAMPLE
-logparser "select * from ex17*.log where to_localtime(timestamp(date,time)) < $(Get-Date|ConvertTo-LogParserTimestamp.ps1)"
+logparser "select * from ex17*.log where to_localtime(timestamp(date,time)) < $(Get-Date|ConvertTo-LogParserTimestamp)"
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([string])] Param(
 # The DateTime value to convert to a LogParser literal.
 [Parameter(Position=0,Mandatory=$true,ValueFromPipeline=$true)][datetime]$Value

@@ -15,14 +15,13 @@ Select-Xml
 Get-Credential
 
 .EXAMPLE
-Restore-SchTasks.ps1
+Restore-SchTasks
 
 (Imports scheduled tasks from tasks.xml, prompting for passwords as needed.)
 #>
 
-#Requires -Version 3
 [CmdletBinding()][OutputType([void])] Param(
-# The file to import tasks from, as exported from Backup-SchTasks.ps1.
+# The file to import tasks from, as exported from Backup-SchTasks.
 [Parameter(Position=0)][string] $Path = 'tasks.xml',
 <#
 A wildcard pattern to match task "paths" (including folders) to skip.

@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Returns the current login properties of an ActiveDirectory user.
 
@@ -6,13 +6,10 @@ Returns the current login properties of an ActiveDirectory user.
 https://learn.microsoft.com/powershell/module/activedirectory/get-aduser
 
 .LINK
-Invoke-WindowsPowerShell.ps1
-
-.LINK
 Get-ADUser
 
 .EXAMPLE
-Get-ADUserStatus.ps1 alans
+Get-ADUserStatus alans
 
 PasswordExpires        : 07/17/2023 12:01:01 AM
 BadLogonsRemaining     : 5
@@ -39,8 +36,6 @@ Surname                : Smithee
 UserPrincipalName      : alans@example.local
 #>
 
-#Requires -Version 7
-#Requires -Modules ActiveDirectory
 [CmdletBinding()][OutputType([Microsoft.ActiveDirectory.Management.ADUser])] Param(
 [Parameter(Position=0,Mandatory=$true)][Microsoft.ActiveDirectory.Management.ADUser] $Identity
 )
@@ -49,3 +44,4 @@ return Get-ADUser -Identity $Identity -Properties AccountExpirationDate, Account
 	BadPwdCount, LastBadPasswordAttempt, LastLogonDate, LockedOut, PasswordExpired, PasswordLastSet, PwdLastSet |
 	Add-NoteProperty.ps1 PasswordExpires {$_.PasswordLastSet + $policy.MaxPasswordAge} -Force -PassThru |
 	Add-NoteProperty.ps1 BadLogonsRemaining {$policy.LockoutThreshold - $_.BadLogonCount} -Force -PassThru
+	#TODO: Add or replace dependencies.

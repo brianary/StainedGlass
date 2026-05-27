@@ -35,9 +35,6 @@ LogParser
 ConvertFrom-Csv
 
 .LINK
-Use-Command.ps1
-
-.LINK
 https://www.microsoft.com/download/details.aspx?id=24659
 
 .LINK
@@ -53,7 +50,7 @@ https://docs.microsoft.com/dotnet/api/system.net.http.httpresponsemessage.status
 https://docs.microsoft.com/dotnet/api/system.componentmodel.win32exception
 
 .EXAMPLE
-Get-IisLog.ps1 -LogDirectory \\Server\c$\inetpub\logs\LogFiles\W3SVC1 -After 2014-03-30 -UriPathLike '/WebApp/%' |select -First 1
+Get-IisLog -LogDirectory \\Server\c$\inetpub\logs\LogFiles\W3SVC1 -After 2014-03-30 -UriPathLike '/WebApp/%' |select -First 1
 
 Time          : 2014-03-31 15:56:45
 Server        : 192.168.1.99:80
@@ -76,8 +73,6 @@ WinStatusCode : 5
 WinStatus     : Access is denied
 #>
 
-#Requires -Version 3
-#Requires -Modules Microsoft.PowerShell.Utility
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingCmdletAliases','',
 Justification='This script sets up and uses logparser.')]
 [CmdletBinding()][OutputType([Management.Automation.PSCustomObject])] Param(
@@ -112,6 +107,7 @@ The format the logs are written in:
 [ValidateSet('IIS','IISW3C','W3C')][string] $LogFormat = 'W3C'
 )
 
+#TODO: Add or replace dependencies.
 Use-Command.ps1 logparser "${env:ProgramFiles(x86)}\Log Parser 2.2\LogParser.exe" `
 	-msi http://download.microsoft.com/download/f/f/1/ff1819f9-f702-48a5-bbc7-c9656bc74de8/LogParser.msi
 

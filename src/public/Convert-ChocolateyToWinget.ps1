@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
 Change from managing various packages with Chocolatey to WinGet.
 
 .EXAMPLE
-Convert-ChocolateyToWinget.ps1 -SkipPackages autohotkey,git
+Convert-ChocolateyToWinget -SkipPackages autohotkey,git
 
 Moves package management from Chocolatey to WinGet for everything except
 autohotkey (maybey you are managing Adobe Digital Editions with Chocolatey),
@@ -13,8 +13,6 @@ or git (maybe you are managing PoshGit with Chocolatey).
 System and updates
 #>
 
-#Requires -Version 3
-#Requires -RunAsAdministrator
 [CmdletBinding(ConfirmImpact='High',SupportsShouldProcess=$true)] Param(
 # A specific package to convert
 [Parameter(Position=0,ValueFromPipeline=$true,ValueFromPipelineByPropertyName=$true,ValueFromRemainingArguments=$true)]

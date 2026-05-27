@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Adds or updates a Windows Terminal command profile.
 
@@ -30,25 +30,25 @@ https://learn.microsoft.com/en-us/windows/terminal/json-fragment-extensions
 https://github.com/microsoft/terminal/issues/1918#issuecomment-2452815871
 
 .EXAMPLE
-Set-TerminalProfile.ps1 pwsh
+Set-TerminalProfile pwsh
 
 Adds a default profile for PowerShell Core.
 
 .EXAMPLE
-Set-TerminalProfile.ps1 fsi
+Set-TerminalProfile fsi
 
 Adds a default profile for F# Interactive.
 
 .EXAMPLE
-Set-TerminalProfile.ps1 ssh servername 'ssh username@servername'
+Set-TerminalProfile ssh servername 'ssh username@servername'
 
 Adds an ssh profile named "servername", using the specified command line.
 #>
 
-#Requires -Version 7
 [CmdletBinding()] Param()
 DynamicParam
 {
+	#TODO: Add or replace dependencies.
     $Script:data = Get-Content ([io.path]::ChangeExtension($PSCommandPath, 'json')) -Raw |ConvertFrom-Json -AsHashtable
     $data.Keys |Add-DynamicParam.ps1 -Name Type -Type string -Position 0 -Mandatory
     Add-DynamicParam.ps1 -Name Name -Type string -Position 1
@@ -61,6 +61,7 @@ Begin
     {
         $Script:settings = Join-Path $env:LOCALAPPDATA Packages Microsoft.WindowsTerminal_8wekyb3d8bbwe LocalState settings.json
         if(!(Test-Path $Script:settings -Type Leaf)) {throw "Could not find $Script:settings"}
+		#TODO: Add or replace dependencies.
         $Script:profiles = Select-Json.ps1 -JsonPointer /profiles/list -Path $Script:settings
     }
 
@@ -149,14 +150,15 @@ Begin
         )
         Initialize-Variables
         $termprofile = Get-TerminalProfile $Type $Name |Initialize-TerminalProfile $Name $CommandLine
-        Write-Info.ps1 'Found profile:' -fg DarkGray
-        $termprofile |Format-Table -AutoSize |Out-String |Write-Info.ps1 -fg Gray
+        Write-Information 'Found profile:' #-fg DarkGray
+        $termprofile |Format-Table -AutoSize |Out-String |Write-Information #-fg Gray
         for($position = 0; $position -lt $Script:profiles.Count; $position++)
         {
             if($Script:profiles[$position]['guid'] -eq $termprofile['guid']) {break}
         }
-        Write-Info.ps1 "Setting position $position"
+        Write-Information "Setting position $position"
         Copy-Item $Script:settings ([io.path]::ChangeExtension($Script:settings, (Get-Date -Format yyyyMMdd\THHmmss)))
+		#TODO: Add or replace dependencies.
         Set-Json.ps1 -JsonPointer "/profiles/list/$position" -PropertyValue $termprofile -Path $Script:settings
     }
 }

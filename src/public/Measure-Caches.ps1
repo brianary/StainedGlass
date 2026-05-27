@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Returns a list of matching cache directories, and their sizes, sorted.
 
@@ -13,14 +13,8 @@ be used to measure other folder matches.
 .FUNCTIONALITY
 Files
 
-.LINK
-Use-Command.ps1
-
-.LINK
-Format-ByteUnits.ps1
-
 .EXAMPLE
-Measure-Caches.ps1 |Format-Table -AutoSize
+Measure-Caches |Format-Table -AutoSize
 
 Path                                                                Size    DirectorySize DirectorySizeOnDisk
 ----                                                                ----    ------------- -------------------
@@ -34,7 +28,6 @@ c:\users\usernam\appdata\roaming\slack\code cache                   282MB       
 c:\users\usernam\appdata\roaming\code\cacheddata                    172.6MB     181008350           191647744
 #>
 
-#Requires -Version 3
 [CmdletBinding()] Param(
 # The root directory to search from.
 [string] $Path = $env:APPDATA,
@@ -43,6 +36,7 @@ c:\users\usernam\appdata\roaming\code\cacheddata                    172.6MB     
 )
 Begin
 {
+	#TODO: Add or replace dependencies.
 	Use-Command.ps1 du "$env:ChocolateyInstall\bin\du.exe" -cinst sysinternals
 }
 Process
@@ -54,6 +48,7 @@ Process
 		ConvertFrom-Csv -Delimiter "`t" -Header Path,CurrentFileCount,CurrentFileSize,FileCount,DirectoryCount,DirectorySize,DirectorySizeOnDisk |
 		ForEach-Object {[pscustomobject]@{
 			Path                = $_.Path
+			#TODO: Add or replace dependencies.
 			Size                = [long] $_.DirectorySize |Format-ByteUnits.ps1 -Precision 1
 			DirectorySize       = [long] $_.DirectorySize
 			DirectorySizeOnDisk = [long] $_.DirectorySizeOnDisk

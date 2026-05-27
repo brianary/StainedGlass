@@ -19,12 +19,12 @@ Scheduled Tasks
 https://msdn.microsoft.com/library/windows/desktop/bb736357.aspx
 
 .EXAMPLE
-Backup-SchTasks.ps1
+Backup-SchTasks
 
 Backs up Windows Scheduled Tasks to tasks.xml.
 
 .EXAMPLE
-Backup-SchTasks.ps1 tasks-backup.xml -Stylesheet tasks.css
+Backup-SchTasks tasks-backup.xml -Stylesheet tasks.css
 
 Saves scheduled tasks to tasks-backup.xml using tasks.css as a display stylesheet.
 #>
