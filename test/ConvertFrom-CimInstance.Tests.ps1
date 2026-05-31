@@ -3,13 +3,10 @@
 Tests converting a CimInstance object to a PSObject.
 #>
 
-if((Test-Path .changes -Type Leaf) -and
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |
-		Where-Object {$_.StartsWith("$(($MyInvocation.MyCommand.Name -split '\.',2)[0]).")})) {return}
+if(!(&"$PSScriptRoot/../scripts/Test-RelevantTest.ps1")) {return}
 BeforeAll {
 	Set-StrictMode -Version Latest
-	$module = Get-Item "$PSScriptRoot/../src/.publish/*.psd1"
-	Import-Module $module -Force
+	&"$PSScriptRoot/../scripts/Import-ThisModule.ps1"
 }
 Describe 'ConvertFrom-CimInstance' -Tag ConvertFrom-CimInstance {
 	Context 'Convert a CimInstance object to a PSObject' `
@@ -47,5 +44,5 @@ Describe 'ConvertFrom-CimInstance' -Tag ConvertFrom-CimInstance {
 	}
 }
 AfterAll {
-	Remove-Module $module.BaseName -Force
+	&"$PSScriptRoot/../scripts/Remove-ThisModule.ps1"
 }
