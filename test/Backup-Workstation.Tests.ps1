@@ -3,9 +3,6 @@
 Tests Adds various configuration files and exported settings to a ZIP file.
 #>
 
-$basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
-$skip = !(Test-Path .changes -Type Leaf) ? $false :
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
 if(!(&"$PSScriptRoot/../scripts/Test-RelevantTest.ps1")) {return}
 BeforeAll {
 	Set-StrictMode -Version Latest
@@ -15,8 +12,6 @@ Describe 'Backup-Workstation' -Tag Backup-Workstation -Skip:$skip {
 	BeforeAll {
 		if(!(Get-Module -List PSSQLite)) {Install-Module PSSQLite -Force}
 		if(!(Get-Module -List Microsoft.PowerShell.SecretManagement)) {Install-Module Microsoft.PowerShell.SecretManagement -Force}
-		$scriptsdir,$sep = (Split-Path $PSScriptRoot),[io.path]::PathSeparator
-		if($scriptsdir -notin ($env:Path -split $sep)) {$env:Path += "$sep$scriptsdir"}
 	}
 	# skipping because this test is extremely slow, but passed last time it ran
 	Context 'Adds various configuration files and exported settings to a ZIP file.' `
@@ -25,7 +20,7 @@ Describe 'Backup-Workstation' -Tag Backup-Workstation -Skip:$skip {
 		It "Creates a ZIP file" {
 			$file = 'TestDrive:\backup.zip'
 			$file |Should -Not -Exist
-			Backup-Workstation.ps1 $file
+			Backup-Workstation $file
 			$file |Should -Exist
 			Expand-Archive $file -DestinationPath TestDrive:\
 			'TestDrive:\env-vars.json' |Should -Exist
@@ -43,4 +38,7 @@ Describe 'Backup-Workstation' -Tag Backup-Workstation -Skip:$skip {
 			#>
 		}
 	}
+}
+AfterAll {
+	&"$PSScriptRoot/../scripts/Remove-ThisModule.ps1"
 }

@@ -3,19 +3,12 @@
 Tests creating a backup as a sibling to a file, with date and time values in the name.
 #>
 
-$basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
-$skip = !(Test-Path .changes -Type Leaf) ? $false :
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
 if(!(&"$PSScriptRoot/../scripts/Test-RelevantTest.ps1")) {return}
 BeforeAll {
 	Set-StrictMode -Version Latest
 	&"$PSScriptRoot/../scripts/Import-ThisModule.ps1"
 }
 Describe 'Backup-File' -Tag Backup-File -Skip:$skip {
-	BeforeAll {
-		$scriptsdir,$sep = (Split-Path $PSScriptRoot),[io.path]::PathSeparator
-		if($scriptsdir -notin ($env:Path -split $sep)) {$env:Path += "$sep$scriptsdir"}
-	}
 	BeforeEach {
 		Push-Location TestDrive:\
 	}
@@ -25,7 +18,7 @@ Describe 'Backup-File' -Tag Backup-File -Skip:$skip {
 	Context 'Simple backup' -Tag BackupFile,Backup,File {
 		It 'Should create a backup as a sibling to a file, with date and time values in the name' {
 			"$(New-Guid)" |Out-File logfile.log
-			Backup-File.ps1 logfile.log
+			Backup-File logfile.log
 			'logfile.log' |Should -Exist
 			$null,$backup = Get-Item logfile*.log |Sort-Object {$_.Name.Length}
 			$backup |Should -HaveCount 1 -Because 'another file with a longer name should exist'
@@ -33,4 +26,7 @@ Describe 'Backup-File' -Tag Backup-File -Skip:$skip {
 			$backup.Name |Should -Match '\Alogfile-\d{14}\.log\z' -Because 'the backup file should include the date & time'
 		}
 	}
+}
+AfterAll {
+	&"$PSScriptRoot/../scripts/Remove-ThisModule.ps1"
 }

@@ -3,19 +3,12 @@
 Tests formattting a datetime as a LogParser literal.
 #>
 
-$basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
-$skip = !(Test-Path .changes -Type Leaf) ? $false :
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
 if(!(&"$PSScriptRoot/../scripts/Test-RelevantTest.ps1")) {return}
 BeforeAll {
 	Set-StrictMode -Version Latest
 	&"$PSScriptRoot/../scripts/Import-ThisModule.ps1"
 }
 Describe 'ConvertTo-LogParserTimestamp' -Tag ConvertTo-LogParserTimestamp -Skip:$skip {
-	BeforeAll {
-		$scriptsdir,$sep = (Split-Path $PSScriptRoot),[io.path]::PathSeparator
-		if($scriptsdir -notin ($env:Path -split $sep)) {$env:Path += "$sep$scriptsdir"}
-	}
 	Context 'Formats a datetime as a LogParser literal' `
 		-Tag ConvertToLogParserTimestamp,Convert,ConvertTo,LogParserTimestamp,LogParser {
 		It "Converts '<DateTime>' into a LogParser timestamp expression" -TestCases @(
@@ -31,12 +24,15 @@ Describe 'ConvertTo-LogParserTimestamp' -Tag ConvertTo-LogParserTimestamp -Skip:
 		) {
 			Param([datetime] $DateTime)
 			$DateTime |
-				ConvertTo-LogParserTimestamp.ps1 |
+				ConvertTo-LogParserTimestamp |
 				Should -BeExactly "timestamp('$(Get-Date $DateTime -f 'yyyy-MM-dd HH:mm:ss')','yyyy-MM-dd HH:mm:ss')" `
 				-Because 'pipeline should work'
-			ConvertTo-LogParserTimestamp.ps1 $DateTime |
+			ConvertTo-LogParserTimestamp $DateTime |
 				Should -BeExactly "timestamp('$(Get-Date $DateTime -f 'yyyy-MM-dd HH:mm:ss')','yyyy-MM-dd HH:mm:ss')" `
 				-Because 'parameter should work'
 		}
 	}
+}
+AfterAll {
+	&"$PSScriptRoot/../scripts/Remove-ThisModule.ps1"
 }

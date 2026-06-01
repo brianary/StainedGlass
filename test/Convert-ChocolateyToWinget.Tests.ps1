@@ -3,19 +3,12 @@
 Tests Change from managing various packages with Chocolatey to WinGet.
 #>
 
-$basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
-$skip = !(Test-Path .changes -Type Leaf) ? $false :
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
 if(!(&"$PSScriptRoot/../scripts/Test-RelevantTest.ps1")) {return}
 BeforeAll {
 	Set-StrictMode -Version Latest
 	&"$PSScriptRoot/../scripts/Import-ThisModule.ps1"
 }
 Describe 'Convert-ChocolateyToWinget' -Tag Convert-ChocolateyToWinget -Skip:$skip {
-	BeforeAll {
-		$scriptsdir,$sep = (Split-Path $PSScriptRoot),[io.path]::PathSeparator
-		if($scriptsdir -notin ($env:Path -split $sep)) {$env:Path += "$sep$scriptsdir"}
-	}
 	Context 'Change from managing various packages with Chocolatey to WinGet' `
 		-Tag ConvertChocolateyToWinget,Convert,Chocolatey,Winget `
 		-Skip:(!(([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).`
@@ -37,11 +30,14 @@ Describe 'Convert-ChocolateyToWinget' -Tag Convert-ChocolateyToWinget -Skip:$ski
 					else {throw "Can't install $($args[3])"}
 				}
 			}
-			Convert-ChocolateyToWinget.ps1 -Confirm:$false
+			Convert-ChocolateyToWinget -Confirm:$false
 			Assert-MockCalled -CommandName winget -ParameterFilter {
 				$args[0] -eq 'install' -and $args[1] -eq '-e' -and $args[2] -eq '--id' -and
 				$args[3] -in '7zip.7zip','GitHub.cli','Git.Git','Microsoft.VisualStudioCode'
 			} -Times 4
 		}
 	}
+}
+AfterAll {
+	&"$PSScriptRoot/../scripts/Remove-ThisModule.ps1"
 }

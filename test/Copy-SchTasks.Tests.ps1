@@ -5,21 +5,12 @@ Tests copying scheduled jobs from another computer to this one, using a GUI list
 
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText','',
 Justification='These are tests.')] Param()
-[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments','',
-Justification='Usage is not tracked accurately.')]
-$basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
-$skip = !(Test-Path .changes -Type Leaf) ? $false :
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
 if(!(&"$PSScriptRoot/../scripts/Test-RelevantTest.ps1")) {return}
 BeforeAll {
 	Set-StrictMode -Version Latest
 	&"$PSScriptRoot/../scripts/Import-ThisModule.ps1"
 }
 Describe 'Copy-SchTasks' -Tag Copy-SchTasks -Skip:$skip {
-	BeforeAll {
-		$scriptsdir,$sep = (Split-Path $PSScriptRoot),[io.path]::PathSeparator
-		if($scriptsdir -notin ($env:Path -split $sep)) {$env:Path += "$sep$scriptsdir"}
-	}
 	Context 'Copy scheduled jobs from another computer to this one, using a GUI list to choose jobs' `
 		-Tag CopySchTasks,Copy,SchTasks {
 		It "Tasks are copied from one system to another" {
@@ -201,11 +192,14 @@ Describe 'Copy-SchTasks' -Tag Copy-SchTasks -Skip:$skip {
 					Write-Information "Unmatched params: schtasks $args" -infa Continue
 				}
 			}
-			Copy-SchTasks.ps1 SourceComputer DestinationComputerName
+			Copy-SchTasks SourceComputer DestinationComputerName
 			$created = Get-Content TestDrive:\created.txt
 			$created |Should -Contain '\Backup Windows Terminal Config' -Because "The '\Backup Windows Terminal Config' task should have been copied"
 			$created |Should -Contain '\Update Everything' -Because "The '\Update Everything' task should have been copied"
 			$created |Should -Contain '\PowerToys\Autorun for zaphodb' -Because "The '\PowerToys\Autorun for zaphodb' task should have been copied"
 		}
 	}
+}
+AfterAll {
+	&"$PSScriptRoot/../scripts/Remove-ThisModule.ps1"
 }

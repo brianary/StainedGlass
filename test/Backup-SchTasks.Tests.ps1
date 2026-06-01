@@ -3,9 +3,6 @@
 Tests exporting the local list of Scheduled Tasks into a single XML file.
 #>
 
-$basename = "$(($MyInvocation.MyCommand.Name -split '\.',2)[0])."
-$skip = !(Test-Path .changes -Type Leaf) ? $false :
-	!@(Get-Content .changes |Get-Item |Select-Object -ExpandProperty Name |Where-Object {$_.StartsWith($basename)})
 if(!(&"$PSScriptRoot/../scripts/Test-RelevantTest.ps1")) {return}
 BeforeAll {
 	Set-StrictMode -Version Latest
@@ -13,8 +10,6 @@ BeforeAll {
 }
 Describe 'Backup-SchTasks' -Tag Backup-SchTasks -Skip:$skip {
 	BeforeAll {
-		$scriptsdir,$sep = (Split-Path $PSScriptRoot),[io.path]::PathSeparator
-		if($scriptsdir -notin ($env:Path -split $sep)) {$env:Path += "$sep$scriptsdir"}
 		Register-ScheduledTask -TaskName x -Description 'This is a test.' `
 			-Action (New-ScheduledTaskAction -Execute pwsh -Argument 1) `
 			-Trigger (New-ScheduledTaskTrigger -At 2022-02-22 -Once) |
@@ -52,4 +47,7 @@ Describe 'Backup-SchTasks' -Tag Backup-SchTasks -Skip:$skip {
 			Remove-Item tasks-backup.xml
 		}
 	}
+}
+AfterAll {
+	&"$PSScriptRoot/../scripts/Remove-ThisModule.ps1"
 }
