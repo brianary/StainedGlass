@@ -11,6 +11,7 @@ Determines whether the current Pester test script is in scope, when run via work
 Begin {$PSScriptRoot |Split-Path |Push-Location}
 Process
 {
+	if(!$IsWindows) {return}
 	if(!$Name) {return}
 	if(!(Test-Path .changes -Type Leaf)) {return $true}
 	$target = ($Name -split '\.',2)[0]

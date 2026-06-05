@@ -8,7 +8,7 @@ BeforeAll {
 	Set-StrictMode -Version Latest
 	&"$PSScriptRoot/../scripts/Import-ThisModule.ps1"
 }
-Describe 'Backup-Workstation' -Tag Backup-Workstation -Skip:$skip {
+Describe 'Backup-Workstation' -Tag Backup-Workstation {
 	BeforeAll {
 		if(!(Get-Module -List PSSQLite)) {Install-Module PSSQLite -Force}
 		if(!(Get-Module -List Microsoft.PowerShell.SecretManagement)) {Install-Module Microsoft.PowerShell.SecretManagement -Force}

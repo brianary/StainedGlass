@@ -10,15 +10,18 @@ BeforeAll {
 	Set-StrictMode -Version Latest
 	&"$PSScriptRoot/../scripts/Import-ThisModule.ps1"
 }
-Describe 'Copy-SchTasks' -Tag Copy-SchTasks -Skip:$skip {
+Describe 'Copy-SchTasks' -Tag Copy-SchTasks {
 	Context 'Copy scheduled jobs from another computer to this one, using a GUI list to choose jobs' `
 		-Tag CopySchTasks,Copy,SchTasks {
 		It "Tasks are copied from one system to another" {
 			${\Backup Windows Terminal Config} = $false
 			${\Update Everything} = $false
 			${\PowerToys\Autorun for zaphodb} = $false
-			Mock Out-GridView {$_}
-			Mock Get-Credential {return New-Object pscredential zaphodb,('________' |ConvertTo-SecureString -AsPlainText -Force)}
+			Mock Out-GridView {$_} -ModuleName StainedGlass
+			Mock Get-Credential {
+				return New-Object pscredential zaphodb,('________' |
+					ConvertTo-SecureString -AsPlainText -Force)
+			} -ModuleName StainedGlass
 			Mock schtasks {
 				Write-Information "Mock: schtasks $args" -infa Continue
 				if("$args" -eq '/query /s SourceComputer /v /fo csv')
@@ -191,7 +194,7 @@ Describe 'Copy-SchTasks' -Tag Copy-SchTasks -Skip:$skip {
 				{
 					Write-Information "Unmatched params: schtasks $args" -infa Continue
 				}
-			}
+			} -ModuleName StainedGlass
 			Copy-SchTasks SourceComputer DestinationComputerName
 			$created = Get-Content TestDrive:\created.txt
 			$created |Should -Contain '\Backup Windows Terminal Config' -Because "The '\Backup Windows Terminal Config' task should have been copied"

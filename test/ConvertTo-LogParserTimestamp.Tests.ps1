@@ -8,7 +8,7 @@ BeforeAll {
 	Set-StrictMode -Version Latest
 	&"$PSScriptRoot/../scripts/Import-ThisModule.ps1"
 }
-Describe 'ConvertTo-LogParserTimestamp' -Tag ConvertTo-LogParserTimestamp -Skip:$skip {
+Describe 'ConvertTo-LogParserTimestamp' -Tag ConvertTo-LogParserTimestamp {
 	Context 'Formats a datetime as a LogParser literal' `
 		-Tag ConvertToLogParserTimestamp,Convert,ConvertTo,LogParserTimestamp,LogParser {
 		It "Converts '<DateTime>' into a LogParser timestamp expression" -TestCases @(

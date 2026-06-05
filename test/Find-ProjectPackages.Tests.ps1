@@ -8,7 +8,7 @@ BeforeAll {
 	Set-StrictMode -Version Latest
 	&"$PSScriptRoot/../scripts/Import-ThisModule.ps1"
 }
-Describe 'Find-ProjectPackages' -Tag Find-ProjectPackages -Skip:$skip {
+Describe 'Find-ProjectPackages' -Tag Find-ProjectPackages {
 	Context 'Find modules used in projects' -Tag FindProjectPackages,Find,ProjectPackages {
 		It "Finds an installed package" {
 			Push-Location TestDrive:

@@ -18,7 +18,7 @@ BeforeAll {
 	&"$PSScriptRoot/../scripts/Import-ThisModule.ps1"
 	$datadir = Join-Path $PSScriptRoot 'data'
 }
-Describe 'Get-IisLog' -Tag Get-IisLog -Skip:$skip {
+Describe 'Get-IisLog' -Tag Get-IisLog {
 	Context 'Query log directory' -Tag GetIisLog,Get,IisLog,IisLogDirectory,LogParser {
 		It "Should query very old IISW3C logs" -Skip:$Global:noLogParser {
 			$entry = Get-IisLog.ps1 -LogDirectory $datadir -After 1996-01-01 -Before 1997-01-01 `

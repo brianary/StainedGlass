@@ -6,20 +6,14 @@ Tests exporting the local list of Scheduled Tasks into a single XML file.
 if(!(&"$PSScriptRoot/../scripts/Test-RelevantTest.ps1")) {return}
 BeforeAll {
 	Set-StrictMode -Version Latest
+	Register-ScheduledTask -TaskName x -Description 'This is a test.' `
+		-Action (New-ScheduledTaskAction -Execute pwsh -Argument 1) `
+		-Trigger (New-ScheduledTaskTrigger -At 2022-02-22 -Once) |
+		Write-Host -ForegroundColor DarkGray
+	Push-Location TestDrive:\
 	&"$PSScriptRoot/../scripts/Import-ThisModule.ps1"
 }
-Describe 'Backup-SchTasks' -Tag Backup-SchTasks -Skip:$skip {
-	BeforeAll {
-		Register-ScheduledTask -TaskName x -Description 'This is a test.' `
-			-Action (New-ScheduledTaskAction -Execute pwsh -Argument 1) `
-			-Trigger (New-ScheduledTaskTrigger -At 2022-02-22 -Once) |
-			Write-Info.ps1 -fg DarkGray
-		Push-Location TestDrive:\
-	}
-	AfterAll {
-		try{Unregister-ScheduledTask -TaskName x -Confirm:$false -EA Stop}catch{Write-Warning "$_"}
-		Pop-Location
-	}
+Describe 'Backup-SchTasks' -Tag Backup-SchTasks {
 	Context 'Exports the local list of Scheduled Tasks into a single XML file' -Tag BackupSchTasks,Backup,SchTasks {
 		It 'Should export to tasks.xml' {
 			Backup-SchTasks.ps1
@@ -49,5 +43,7 @@ Describe 'Backup-SchTasks' -Tag Backup-SchTasks -Skip:$skip {
 	}
 }
 AfterAll {
+	try{Unregister-ScheduledTask -TaskName x -Confirm:$false -EA Stop}catch{Write-Warning "$_"}
+	Pop-Location
 	&"$PSScriptRoot/../scripts/Remove-ThisModule.ps1"
 }
