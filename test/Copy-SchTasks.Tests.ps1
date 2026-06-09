@@ -17,7 +17,7 @@ Describe 'Copy-SchTasks' -Tag Copy-SchTasks {
 			${\Backup Windows Terminal Config} = $false
 			${\Update Everything} = $false
 			${\PowerToys\Autorun for zaphodb} = $false
-			Mock Out-GridView {$_} -ModuleName StainedGlass
+			Mock Out-GridView {return $_} -ModuleName StainedGlass
 			Mock Get-Credential {
 				return New-Object pscredential zaphodb,('________' |
 					ConvertTo-SecureString -AsPlainText -Force)
@@ -196,11 +196,20 @@ Describe 'Copy-SchTasks' -Tag Copy-SchTasks {
 				}
 			} -ModuleName StainedGlass
 			Copy-SchTasks SourceComputer DestinationComputerName
+			Should -Invoke -ModuleName StainedGlass -CommandName Out-GridView `
+				-Because 'the grid view should have been used to select tasks'
+			Should -Invoke -ModuleName StainedGlass -CommandName Get-Credential `
+				-Because 'the credentials are required to copy each task'
+			Should -Invoke -ModuleName StainedGlass -CommandName schtasks `
+				-Because 'schtasks should''ve been used to export tasks'
 			'TestDrive:\created.txt' |Should -Exist -Because 'the file should''ve been created'
 			$created = Get-Content TestDrive:\created.txt
-			$created |Should -Contain '\Backup Windows Terminal Config' -Because "The '\Backup Windows Terminal Config' task should have been copied"
-			$created |Should -Contain '\Update Everything' -Because "The '\Update Everything' task should have been copied"
-			$created |Should -Contain '\PowerToys\Autorun for zaphodb' -Because "The '\PowerToys\Autorun for zaphodb' task should have been copied"
+			$created |Should -Contain '\Backup Windows Terminal Config' `
+				-Because "The '\Backup Windows Terminal Config' task should have been copied"
+			$created |Should -Contain '\Update Everything' `
+				-Because "The '\Update Everything' task should have been copied"
+			$created |Should -Contain '\PowerToys\Autorun for zaphodb' `
+				-Because "The '\PowerToys\Autorun for zaphodb' task should have been copied"
 		}
 	}
 }
