@@ -16,7 +16,7 @@ BeforeAll {
 Describe 'Backup-SchTasks' -Tag Backup-SchTasks {
 	Context 'Exports the local list of Scheduled Tasks into a single XML file' -Tag BackupSchTasks,Backup,SchTasks {
 		It 'Should export to tasks.xml' {
-			Backup-SchTasks.ps1
+			Backup-SchTasks
 			'tasks.xml' |Should -Exist
 			$taskxml = Select-Xml "/Tasks/t:Task[t:RegistrationInfo/t:URI='\x']" .\tasks.xml `
 				-Namespace @{t='http://schemas.microsoft.com/windows/2004/02/mit/task'}
@@ -27,7 +27,7 @@ Describe 'Backup-SchTasks' -Tag Backup-SchTasks {
 			Remove-Item tasks.xml
 		}
 		It 'Should export to tasks-backup.xml using the tasks.css stylesheet' {
-			Backup-SchTasks.ps1 tasks-backup.xml -Stylesheet tasks.css
+			Backup-SchTasks tasks-backup.xml -Stylesheet tasks.css
 			'tasks-backup.xml' |Should -Exist
 			$taskxml = Select-Xml "/Tasks/t:Task[t:RegistrationInfo/t:URI='\x']" .\tasks-backup.xml `
 				-Namespace @{t='http://schemas.microsoft.com/windows/2004/02/mit/task'}

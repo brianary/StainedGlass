@@ -196,6 +196,7 @@ Describe 'Copy-SchTasks' -Tag Copy-SchTasks {
 				}
 			} -ModuleName StainedGlass
 			Copy-SchTasks SourceComputer DestinationComputerName
+			'TestDrive:\created.txt' |Should -Exist -Because 'the file should''ve been created'
 			$created = Get-Content TestDrive:\created.txt
 			$created |Should -Contain '\Backup Windows Terminal Config' -Because "The '\Backup Windows Terminal Config' task should have been copied"
 			$created |Should -Contain '\Update Everything' -Because "The '\Update Everything' task should have been copied"
