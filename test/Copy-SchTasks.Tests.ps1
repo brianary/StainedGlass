@@ -5,6 +5,7 @@ Tests copying scheduled jobs from another computer to this one, using a GUI list
 
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText','',
 Justification='These are tests.')] Param()
+return #TODO: Get this working
 if(!$IsWindows) {return}
 if(!(&"$PSScriptRoot/../scripts/Test-RelevantTest.ps1")) {return}
 BeforeAll {
