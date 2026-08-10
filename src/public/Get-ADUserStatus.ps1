@@ -39,6 +39,10 @@ UserPrincipalName      : alans@example.local
 [CmdletBinding()][OutputType([Microsoft.ActiveDirectory.Management.ADUser])] Param(
 [Parameter(Position=0,Mandatory=$true)][Microsoft.ActiveDirectory.Management.ADUser] $Identity
 )
+if(!(Get-Module ActiveDirectory -ListAvailable -ErrorAction Ignore))
+{
+	throw 'The ActiveDirectory module is not installed, but can be via: Add-WindowsCapability -online -Name Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0'
+}
 $policy = Get-ADDefaultDomainPasswordPolicy
 return Get-ADUser -Identity $Identity -Properties AccountExpirationDate, AccountExpires, AccountLockoutTime, BadLogonCount,
 	BadPwdCount, LastBadPasswordAttempt, LastLogonDate, LockedOut, PasswordExpired, PasswordLastSet, PwdLastSet |
