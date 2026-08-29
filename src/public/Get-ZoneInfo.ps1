@@ -17,9 +17,10 @@ Security
 .EXAMPLE
 Get-ZoneInfo.ps1 ~/Downloads/Git-2.55.0.5-64-bit.exe
 
-ZoneName ZoneId HostUrl
--------- ------ -------
-Internet      3 https://github.com/.../Git-2.55.0.5-64-bit.exe
+File     : ~/Downloads/Git-2.55.0.5-64-bit.exe
+ZoneName : Internet
+ZoneId   : 3
+HostUrl  : https://github.com/.../Git-2.55.0.5-64-bit.exe
 #>
 
 #Requires -Version 7.3
@@ -46,8 +47,9 @@ Process
 		ConvertFrom-StringData
 	$result['ZoneName'] = $zoneName[$_.ZoneId]
 	return [pscustomobject]@{
+		File     = $Path
 		ZoneName = $zoneName[$result['ZoneId']]
 		ZoneId   = $result['ZoneId']
-		HostUrl  = $result['Url']
+		HostUrl  = $result['HostUrl']
 	}
 }
