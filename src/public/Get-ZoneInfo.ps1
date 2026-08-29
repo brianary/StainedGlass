@@ -24,7 +24,6 @@ ZoneName    : Internet
 File        : ~/Downloads/Git-2.55.0.5-64-bit.exe
 #>
 
-#Requires -Version 7.3
 [CmdletBinding()][OutputType([pscustomobject])] Param(
 # The file to return the ZoneIdentifier info for.
 [Parameter(Position=0,Mandatory=$true,ValueFromPipelineByPropertyName=$true)]
