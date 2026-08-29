@@ -17,10 +17,11 @@ Security
 .EXAMPLE
 Get-ZoneInfo.ps1 ~/Downloads/Git-2.55.0.5-64-bit.exe
 
-File     : ~/Downloads/Git-2.55.0.5-64-bit.exe
-ZoneName : Internet
-ZoneId   : 3
-HostUrl  : https://github.com/.../Git-2.55.0.5-64-bit.exe
+ZoneId      : 3
+ReferrerUrl : https://github.com/
+HostUrl     : https://release-assets.githubusercontent.com/.../Git-2.55.0.5-64-bit.exe
+ZoneName    : Internet
+File        : ~/Downloads/Git-2.55.0.5-64-bit.exe
 #>
 
 #Requires -Version 7.3
@@ -42,14 +43,14 @@ Begin
 Process
 {
 	if(!$IsWindows) {Write-Warning 'Not supported outside of Windows.'; return}
+	if(!(Get-Item $Path -Stream Zone.Identifier -ErrorAction Ignore)) {return}
 	$result = Get-Content $Path -Stream Zone.Identifier |
 		Select-Object -Skip 1 |
+		Out-String |
 		ConvertFrom-StringData
-	$result['ZoneName'] = $zoneName[$_.ZoneId]
-	return [pscustomobject]@{
+	$result['ZoneId'] = [int]$result['ZoneId']
+	return [pscustomobject](@{
 		File     = $Path
 		ZoneName = $zoneName[$result['ZoneId']]
-		ZoneId   = $result['ZoneId']
-		HostUrl  = $result['HostUrl']
-	}
+	} + $result)
 }
