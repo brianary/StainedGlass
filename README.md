@@ -26,6 +26,7 @@ Utilities for Windows workstations and servers.
 - [Get-IisLog](https://github.com/brianary/StainedGlass/wiki/Get-IisLog): Easily query IIS logs.
 - [Get-SimpleSchTasks](https://github.com/brianary/StainedGlass/wiki/Get-SimpleSchTasks): Returns simple scheduled task info.
 - [Get-SystemDetails](https://github.com/brianary/StainedGlass/wiki/Get-SystemDetails): Collects some useful system hardware and operating system details via CIM.
+- [Get-ZoneInfo](https://github.com/brianary/StainedGlass/wiki/Get-ZoneInfo): Returns the "mark of the web" that stores the source details of a downloaded file.
 - [Measure-Caches](https://github.com/brianary/StainedGlass/wiki/Measure-Caches): Returns a list of matching cache directories, and their sizes, sorted.
 - [Remove-LockyFile](https://github.com/brianary/StainedGlass/wiki/Remove-LockyFile): Removes a file that may be prone to locking.
 - [Repair-AppxPackages](https://github.com/brianary/StainedGlass/wiki/Repair-AppxPackages): Re-registers all installed Appx packages.
