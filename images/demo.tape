@@ -9,10 +9,7 @@ Enter
 Show
 Type "Get-SystemDetails"
 Enter
-Sleep 9s
-Type "Get-ADUserStatus $env:USERNAME"
-Enter
-Sleep 9s
+Sleep 6s
 Type "Test-WindowsTerminal"
 Enter
 Sleep 3s
@@ -22,9 +19,11 @@ Sleep 4s
 Type "Get-DotNetVersions"
 Enter
 Sleep 4s
-Type "Measure-Caches"
+Type "Get-SimpleSchTasks |Select-Object -First 1"
 Enter
-Sleep 5s
-Type "Get-SimpleSchTasks"
+Sleep 6s
+Type "Get-Item ~/Downloads/git"
+Tab
+Type " |Get-ZoneInfo"
 Enter
-Sleep 9s
+Sleep 8s
