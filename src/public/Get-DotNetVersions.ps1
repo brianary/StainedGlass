@@ -29,8 +29,10 @@ foreach($v in (Get-DotNetFrameworkVersions).GetEnumerator())
 }
 try
 {
-	#TODO: Add or replace dependencies.
-	Use-Command.ps1 dotnet $env:ProgramFiles\dotnet\dotnet.exe -Fail
+	if(!(Get-Command dotnet -Type Application -EA Ignore))
+	{
+		throw 'dotnet not found!'
+	}
 	foreach($v in dotnet --list-runtimes)
 	{
 		$name,$version,$location = $v -split ' ',3
