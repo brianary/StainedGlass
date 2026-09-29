@@ -46,6 +46,5 @@ if(!(Get-Module ActiveDirectory -ListAvailable -ErrorAction Ignore))
 $policy = Get-ADDefaultDomainPasswordPolicy
 return Get-ADUser -Identity $Identity -Properties AccountExpirationDate, AccountExpires, AccountLockoutTime, BadLogonCount,
 	BadPwdCount, LastBadPasswordAttempt, LastLogonDate, LockedOut, PasswordExpired, PasswordLastSet, PwdLastSet |
-	Add-NoteProperty.ps1 PasswordExpires {$_.PasswordLastSet + $policy.MaxPasswordAge} -Force -PassThru |
-	Add-NoteProperty.ps1 BadLogonsRemaining {$policy.LockoutThreshold - $_.BadLogonCount} -Force -PassThru
-	#TODO: Add or replace dependencies.
+	Add-NoteProperty PasswordExpires {$_.PasswordLastSet + $policy.MaxPasswordAge} -Force -PassThru |
+	Add-NoteProperty BadLogonsRemaining {$policy.LockoutThreshold - $_.BadLogonCount} -Force -PassThru

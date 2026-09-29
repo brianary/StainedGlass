@@ -48,11 +48,10 @@ Adds an ssh profile named "servername", using the specified command line.
 [CmdletBinding()] Param()
 DynamicParam
 {
-	#TODO: Add or replace dependencies.
     $Script:data = Get-Content ([io.path]::ChangeExtension($PSCommandPath, 'json')) -Raw |ConvertFrom-Json -AsHashtable
-    $data.Keys |Add-DynamicParam.ps1 -Name Type -Type string -Position 0 -Mandatory
-    Add-DynamicParam.ps1 -Name Name -Type string -Position 1
-    Add-DynamicParam.ps1 -Name CommandLine -Type string -Position 2
+    $data.Keys |Add-DynamicParam -Name Type -Type string -Position 0 -Mandatory
+    Add-DynamicParam -Name Name -Type string -Position 1
+    Add-DynamicParam -Name CommandLine -Type string -Position 2
     $DynamicParams
 }
 Begin
@@ -61,8 +60,7 @@ Begin
     {
         $Script:settings = Join-Path $env:LOCALAPPDATA Packages Microsoft.WindowsTerminal_8wekyb3d8bbwe LocalState settings.json
         if(!(Test-Path $Script:settings -Type Leaf)) {throw "Could not find $Script:settings"}
-		#TODO: Add or replace dependencies.
-        $Script:profiles = Select-Json.ps1 -JsonPointer /profiles/list -Path $Script:settings
+        $Script:profiles = Select-Json -JsonPointer /profiles/list -Path $Script:settings
     }
 
     function Get-TerminalProfileByGuid
@@ -158,8 +156,7 @@ Begin
         }
         Write-Information "Setting position $position"
         Copy-Item $Script:settings ([io.path]::ChangeExtension($Script:settings, (Get-Date -Format yyyyMMdd\THHmmss)))
-		#TODO: Add or replace dependencies.
-        Set-Json.ps1 -JsonPointer "/profiles/list/$position" -PropertyValue $termprofile -Path $Script:settings
+        Set-Json -JsonPointer "/profiles/list/$position" -PropertyValue $termprofile -Path $Script:settings
     }
 }
 Process { Update-TerminalProfile @PSBoundParameters }

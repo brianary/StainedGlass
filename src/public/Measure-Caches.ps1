@@ -36,8 +36,10 @@ c:\users\usernam\appdata\roaming\code\cacheddata                    172.6MB     
 )
 Begin
 {
-	#TODO: Add or replace dependencies.
-	Use-Command.ps1 du "$env:ChocolateyInstall\bin\du.exe" -cinst sysinternals
+	if(!(Get-Command du -Type Application -EA Ignore))
+	{
+		throw 'Sysinternals du not found!'
+	}
 }
 Process
 {
@@ -48,8 +50,7 @@ Process
 		ConvertFrom-Csv -Delimiter "`t" -Header Path,CurrentFileCount,CurrentFileSize,FileCount,DirectoryCount,DirectorySize,DirectorySizeOnDisk |
 		ForEach-Object {[pscustomobject]@{
 			Path                = $_.Path
-			#TODO: Add or replace dependencies.
-			Size                = [long] $_.DirectorySize |Format-ByteUnits.ps1 -Precision 1
+			Size                = [long] $_.DirectorySize |Format-ByteUnits -Precision 1
 			DirectorySize       = [long] $_.DirectorySize
 			DirectorySizeOnDisk = [long] $_.DirectorySizeOnDisk
 		}} |
