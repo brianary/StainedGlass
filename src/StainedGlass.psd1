@@ -10,7 +10,8 @@ CompanyName = 'Unknown'
 Copyright = 'Copyright © 2026 Brian Lalonde'
 Description = 'Utilities for Windows workstations and servers.'
 PowerShellVersion = '7.0'
-RequiredModules = @('JSONLab','ModernConveniences','ScheduledTasks','TLS') # Appx and CimCmdlets should be built-in
+RequiredModules = @('JSONLab','ModernConveniences','TLS')
+# Appx, CimCmdlets, and ScheduledTasks should be built-in
 FunctionsToExport = @('*') # '*'
 CmdletsToExport = @() # '*'
 VariablesToExport = @() # '*'
