@@ -37,6 +37,7 @@ UserPrincipalName      : alans@example.local
 #>
 
 [CmdletBinding()][OutputType([Microsoft.ActiveDirectory.Management.ADUser])] Param(
+# The name of the ActiveDirectory user account to query.
 [Parameter(Position=0,Mandatory=$true)][Microsoft.ActiveDirectory.Management.ADUser] $Identity
 )
 if(!(Get-Module ActiveDirectory -ListAvailable -ErrorAction Ignore))

@@ -13,6 +13,7 @@ serivce3 SERVERC       2023-08-25 17:19:49 Third MSA   {}
 #>
 
 [CmdletBinding()] Param(
+# The wildcard filter to use for the query.
 [Parameter(Position=0)][string] $Filter = '*'
 )
 Get-ADServiceAccount -Filter $Filter -Properties Description,LastLogonDate,HostComputers |
