@@ -24,8 +24,11 @@ Sets the tasks running user to the "automation" managed service account.
 #>
 
 [CmdletBinding()] Param(
+# The name of the task to update.
 [Parameter(Position=0,Mandatory=$true,ValueFromPipelineByPropertyName=$true)][string] $TaskName,
+# The account to run the task as.
 [Parameter(Position=1,Mandatory=$true)][Alias('MSA','gMSA','UserId')][string] $ServiceAccount,
+# Whether the task should be run with elevated permissions.
 [switch] $HighestRunLevel
 )
 Process
