@@ -45,19 +45,25 @@ Set-TerminalProfile ssh servername 'ssh username@servername'
 Adds an ssh profile named "servername", using the specified command line.
 #>
 
-[CmdletBinding()] Param()
-DynamicParam
-{
-    $Script:data = Get-Content ([io.path]::ChangeExtension($PSCommandPath, 'json')) -Raw |ConvertFrom-Json -AsHashtable
-    $data.Keys |Add-DynamicParam -Name Type -Type string -Position 0 -Mandatory
-    Add-DynamicParam -Name Name -Type string -Position 1
-    Add-DynamicParam -Name CommandLine -Type string -Position 2
-    $DynamicParams
-}
+[CmdletBinding()] Param(
+# 
+[Parameter(Position=0,Mandatory=$true)]
+[ArgumentCompleter({
+	Param($cmd,$param,$value)
+	Get-Content (Join-Path 'src/public' TerminalProfiles.json) -Raw |
+		ConvertFrom-Json -AsHashtable |
+		Select-Object -ExpandProperty Keys |
+		Where-Object {$_ -like "$value*"}
+})]
+[string] $Type,
+[Parameter(Position=1)][string] $Name,
+[Parameter(Position=2)][string] $CommandLine
+)
 Begin
 {
     function Initialize-Variables
     {
+		$Script:data = Get-Content (Join-Path $PSScriptRoot TerminalProfiles.json) -Raw |ConvertFrom-Json -AsHashtable
         $Script:settings = Join-Path $env:LOCALAPPDATA Packages Microsoft.WindowsTerminal_8wekyb3d8bbwe LocalState settings.json
         if(!(Test-Path $Script:settings -Type Leaf)) {throw "Could not find $Script:settings"}
         $Script:profiles = Select-Json -JsonPointer /profiles/list -Path $Script:settings
