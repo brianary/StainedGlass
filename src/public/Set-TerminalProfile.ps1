@@ -5,15 +5,6 @@ Adds or updates a Windows Terminal command profile.
 .FUNCTIONALITY
 Windows Terminal
 
-.PARAMETER Type
-The CLI application to configure.
-
-.PARAMETER Name
-The name of the profile.
-
-.PARAMETER CommandLine
-The command line to use in the profile.
-
 .LINK
 https://aka.ms/terminal-documentation
 
@@ -46,7 +37,7 @@ Adds an ssh profile named "servername", using the specified command line.
 #>
 
 [CmdletBinding()] Param(
-# 
+# The terminal profile template type to use. The CLI application to configure.
 [Parameter(Position=0,Mandatory=$true)]
 [ArgumentCompleter({
 	Param($cmd,$param,$value)
@@ -56,7 +47,9 @@ Adds an ssh profile named "servername", using the specified command line.
 		Where-Object {$_ -like "$value*"}
 })]
 [string] $Type,
+# The name of the profile to set.
 [Parameter(Position=1)][string] $Name,
+# The command to initiate the command line interface.
 [Parameter(Position=2)][string] $CommandLine
 )
 Begin
