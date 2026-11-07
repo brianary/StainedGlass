@@ -33,6 +33,7 @@ Sets the tasks running user to the "automation" managed service account.
 )
 Process
 {
+	$ServiceAccount = $ServiceAccount -replace '\b\$?\z','$'
     Set-ScheduledTask -TaskName $TaskName -Principal (New-ScheduledTaskPrincipal -UserID $ServiceAccount `
         -LogonType Password -RunLevel:($HighestRunLevel ? 'Highest' : 'Normal'))
 }
