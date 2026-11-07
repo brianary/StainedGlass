@@ -29,11 +29,11 @@ Sets the tasks running user to the "automation" managed service account.
 # The account to run the task as.
 [Parameter(Position=1,Mandatory=$true)][Alias('MSA','gMSA','UserId')][string] $ServiceAccount,
 # Whether the task should be run with elevated permissions.
-[switch] $HighestRunLevel
+[Alias('Admin','HighestPrivileges','HighestRunLevel')][switch] $AsAdmin
 )
 Process
 {
 	$ServiceAccount = $ServiceAccount -replace '\b\$?\z','$'
     Set-ScheduledTask -TaskName $TaskName -Principal (New-ScheduledTaskPrincipal -UserID $ServiceAccount `
-        -LogonType Password -RunLevel:($HighestRunLevel ? 'Highest' : 'Normal'))
+        -LogonType Password -RunLevel:($HighestRunLevel ? 'Highest' : 'Limited'))
 }
