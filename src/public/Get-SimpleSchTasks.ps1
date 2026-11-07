@@ -164,7 +164,7 @@ filter Get-StateChange
 			Enabled        = $Task.{Settings}?.Enabled
 			State          = $Task.State
 			User           = $Task.Principal.UserId
-			RunLevel       = $Task.Principal.RunLevel
+			AsAdmin        = $Task.Principal.RunLevel -eq 'Highest'
 			LastRunTime    = $info.LastRunTime
 			LastTaskResult = $info.LastTaskResult
 			Run            = $Task.Actions |Get-Run
